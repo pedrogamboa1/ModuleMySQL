@@ -56,7 +56,7 @@ class EmployeeQueries {
 
   async viewDepartments() {
     const results = await this.db.query('SELECT * FROM department');
-    console.log(results);
+    console.table(results);
     await this.startApp();
   }
   
