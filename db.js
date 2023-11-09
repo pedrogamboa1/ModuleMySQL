@@ -1,38 +1,29 @@
-const mysql = require('mysql2');
+const { createPool } = require('mysql2');
 
 class Database {
   constructor() {
-    this.connection = mysql.createConnection({
+    this.pool = createPool({
       host: 'localhost',
       user: 'linkp69',
       password: 'Playa123',
       database: 'employeetracker'
     });
-
-    this.connection.promise();
-
-    // Add event listener for connection errors
-    this.connection.on('error', (err) => {
-      console.error('MySQL Connection Error:', err);
-    });
+    this.pool.promise();
   }
 
-  async query(sql, args) {
+  async query(sql, values) {
     try {
-      const results = await this.connection.execute(sql, args);
+      const [results, fields] = await this.pool.promise().query(sql, values);
       return results;
-    } catch (err) {
-      throw err;
+    } catch (error) {
+      console.error('Error executing query:', error);
+      throw error;
     }
   }
 
-  async close() {
-    try {
-      await this.connection.end();
-    } catch (err) {
-      throw err;
-    }
+  async end() {
+    await this.pool.end();
   }
 }
 
-module.exports = Database;
+module.exports = Database; 

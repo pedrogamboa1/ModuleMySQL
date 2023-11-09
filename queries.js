@@ -3,7 +3,7 @@ const Database = require('./db');
 
 class EmployeeQueries {
   constructor() {
-    this.db = new Database();
+    this.db =  new Database();
   }
 
   async startApp() {
@@ -56,9 +56,10 @@ class EmployeeQueries {
 
   async viewDepartments() {
     const results = await this.db.query('SELECT * FROM department');
-    console.table(results);
+    console.log(results);
     await this.startApp();
   }
+  
 
   async viewRoles() {
     const results = await this.db.query('SELECT * FROM role');
