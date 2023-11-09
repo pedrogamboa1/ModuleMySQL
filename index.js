@@ -1,10 +1,14 @@
+const inquirer = require('inquirer');
 const EmployeeQueries = require('./queries');
 
 const employeeQueries = new EmployeeQueries();
 
 async function startApp() {
   try {
-    await employeeQueries.startApp();
+    let answer;
+    do {
+      answer = await employeeQueries.startApp();
+    } while (answer && answer.action !== 'Exit');
   } catch (error) {
     console.error('Error:', error);
   } finally {
@@ -13,3 +17,4 @@ async function startApp() {
 }
 
 startApp();
+

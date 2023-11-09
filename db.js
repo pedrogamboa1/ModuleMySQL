@@ -21,7 +21,7 @@ class Database {
     }
   }
 
-  async end() {
+  async close() {
     await this.pool.end();
   }
 }

@@ -4,7 +4,19 @@ const Database = require('./db');
 class EmployeeQueries {
   constructor() {
     this.db =  new Database();
+    this.connectionClosed = false;
   }
+  async closeConnection() {
+    try {
+      if (!this.connectionClosed) {
+        await this.db.close();
+        this.connectionClosed = true;
+      }
+    } catch (error) {
+      console.error('Error closing connection:', error);
+    }
+  }
+  
 
   async startApp() {
     const answer = await inquirer.prompt([
@@ -49,9 +61,11 @@ class EmployeeQueries {
         break;
       case 'Exit':
         console.log('Exiting the application.');
-        await this.db.close();
+        await this.closeConnection();
         break;
     }
+    return answer;
+    
   }
 
   async viewDepartments() {
